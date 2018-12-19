@@ -6,13 +6,19 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 02:24:33 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/18 07:38:13 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2018/12/19 14:31:51 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
+ 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
+
 #include "./ls.h" 
 
 t_ls	*create_struct()
@@ -153,6 +159,7 @@ int	parsing_fil(char **ac, t_ls *l)
 	t_list	*list;
 
 	i = l->last_opt + 1;
+	list = NULL;
 	while (ac[i])
 	{
 		list = create_list_elem(ac[i]);
@@ -161,7 +168,8 @@ int	parsing_fil(char **ac, t_ls *l)
 		list_add(l, list);
 		i++;
 	}
-	free(list);
+	if (list)
+		free(list);
 	return (1);
 }
 
@@ -184,9 +192,9 @@ void	free_files(t_list *list)
 		free(list);
 		list = tmp;
 	}
-	free(list);
+	if (list)
+		free(list);
 }
-
 
 void	free_struct(t_ls *l)
 {
@@ -203,7 +211,6 @@ void	free_struct(t_ls *l)
 	}
 }
 
-
 int		ft_illegal_opt(t_ls *l)
 {
 	printf("ls: illegal option -- %c\nusage: ls [-...] [file ...]\n", l->c_error);
@@ -211,14 +218,12 @@ int		ft_illegal_opt(t_ls *l)
 	return (0);
 }
 
-
 int		ft_error_occured(t_ls *l)
 {
 	printf("an error occured");
 	free_struct(l);
 	return (0);
 }
-
 
 void	print_files(t_ls *l)
 {
@@ -230,11 +235,18 @@ void	print_files(t_ls *l)
 	}
 }
 
+int ft_nofiles(t_ls *l)
+{
+	struct stat	files;
+
+	return (0);
+}
 
 int main(int ac, char **av)
 {
 	t_ls	*l;
 	int		res;
+	int i;
 
 	ac++;
 	if (!(l = create_struct()))
@@ -243,8 +255,8 @@ int main(int ac, char **av)
 		return(ft_illegal_opt(l));
 	if (res == 1)
 		return(ft_error_occured(l));
-
-	int i;
+	if (!l->files)
+		res = ft_nofiles(l);
 	i = 0;
 	while (i < OPT_TOT)
 		printf("%d", l->opts[i++]);
