@@ -6,19 +6,43 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/18 07:11:00 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2018/12/20 07:37:40 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#define	OPTLIST "Ralrt" 
-#define OPT_TOT	5
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
+#include <dirent.h>
+#include <stdio.h>
+
+#define	OPTLIST "ARalrt" 
+
+#define OPT_TOT	6
+#define OPT_A	0
+#define OPT_R	1
+#define OPT_a	2
+#define OPT_l	3
+#define OPT_r	4
+#define OPT_t	5
+
+
 
 typedef	struct		s_list
 {
 	char			*filename;
 	struct s_list	*next;
 }					t_list;
+
+typedef	struct		s_files
+{
+	char			*filename;
+	struct stat		*filestats;
+	struct s_files	*next;
+}					t_files;
 
 typedef struct		s_ls
 {
@@ -27,4 +51,19 @@ typedef struct		s_ls
 	int				*opts;
 	int				d_;
 	char			c_error;
+	t_files			*dirnofil;
+	t_list			*filnofil;
 }					t_ls;
+
+t_ls	*create_struct();
+void	free_struct(t_ls *l);
+void	free_list(t_list **list);
+int		ft_illegal_opt(t_ls *l);
+t_files	*create_file_elem(char *str);
+t_list	*create_list_elem(char *str);
+void	list_add(t_ls *l, t_list *list);
+void	file_add(t_files **allfiles, t_files *file);
+int		ft_error_occured(t_ls *l);
+void	print_files(t_ls *l);
+int		ft_nofiles(t_ls *l);
+void	ft_nofiledir(t_files **directories, char *str, struct stat *files);
