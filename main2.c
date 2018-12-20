@@ -1,38 +1,3 @@
-void	ft_nofiledir(t_files **directories, char *str, struct stat *files)
-{
-
-	t_files		*directory;
-
-	directory = create_file_elem(str);
-	directory->filestats = files;
-	file_add(directories, directory);
-	if (directory)
-		free(directory);
-
-}
-
-int		ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
-}
-
-t_files	*duplicate_file(t_files *files)
-{
-	t_files	*new;
-
-	new = create_file_elem(files->filename);
-	if (!new)
-		return (NULL);
-	new->filestats = files->filestats;
-	new->next = NULL;
-	return (new);
-}
-
 void	sort_files(t_files	*files, t_files **sorted)
 {
 	t_files *tmp;

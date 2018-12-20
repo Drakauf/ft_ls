@@ -6,12 +6,24 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:36:55 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/20 05:57:21 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2018/12/20 09:57:56 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "ls.h"
+
+t_files *duplicate_file(t_files *files)
+{
+	t_files *new;
+
+	new = create_file_elem(files->filename);
+	if (!new)
+		return (NULL);
+	new->filestats = files->filestats;
+	new->next = NULL;
+	return (new);
+}
 
 t_list	*create_list_elem(char *str)
 {
@@ -38,10 +50,9 @@ t_files	*create_file_elem(char *str)
 		file->filename = str;
 		file->filestats = NULL;
 		file->next = NULL;
-	}
-	else
-		return (NULL);
 	return (file);
+	}
+		return (NULL);
 }
 
 t_ls	*create_struct()
