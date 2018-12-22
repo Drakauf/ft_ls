@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:16:11 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/20 12:49:21 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2018/12/22 19:17:42 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -23,9 +23,12 @@ void	sort_files(t_files	*files, t_files **sorted)
 		return ;
 	}
 	tmp = *sorted;
-	if (!tmp->next && strcmp(tmp->filename, files->filename) <= 0)
+/*	if (!tmp->next && strcmp(tmp->filename, files->filename) <= 0)
+	{
+		dprintf(1, "here : %s, %s\n",tmp->filename, files->filename);
 		tmp->next = files;
-	else if (!tmp->next && strcmp(tmp->filename, files->filename) >= 0)
+	}
+	else*/ if ((/*!tmp->next && */strcmp(tmp->filename, files->filename) >= 0))
 	{
 		files->next = tmp;
 		*sorted = files;
@@ -45,7 +48,6 @@ void	sort_files(t_files	*files, t_files **sorted)
 		tmp->next = files;
 	}
 }
-
 
 void	rsort_files(t_files	*files, t_files **sorted)
 {
@@ -81,6 +83,20 @@ void	rsort_files(t_files	*files, t_files **sorted)
 }
 
 
+int		ft_aopt(t_ls *l, t_files *files)
+{
+	if (files->filename[0] == '.')
+	{
+		if (!l->opts[OPT_A] && !l->opts[OPT_a])
+			return (0);
+		if (ft_strcmp(files->filename, ".") == 0 && !l->opts[OPT_a])
+			return(0);
+		if (ft_strcmp(files->filename, "..") == 0 && !l->opts[OPT_a])
+			return(0);
+	}
+	return (1);
+}
+
 t_files	*pre_sort(t_files **files, t_ls *l)
 {
 	t_files	*sorted;
@@ -91,12 +107,15 @@ t_files	*pre_sort(t_files **files, t_ls *l)
 	while (*files)
 	{
 		tmp = (*files)->next;
+		if (ft_aopt(l, *files))
+				{
 		if (!(tosort = duplicate_file(*files)))
 			return (0);
 		if (l->opts[OPT_r])
 		rsort_files(tosort, &sorted);
 		else
 		sort_files(tosort, &sorted);
+		}
 		free(*files);
 		*files = tmp;
 	}
