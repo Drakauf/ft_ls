@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/20 12:43:20 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/03 02:52:22 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,7 +40,7 @@ typedef	struct		s_list
 typedef	struct		s_files
 {
 	char			*filename;
-	struct stat		*filestats;
+	struct stat		filestats;
 	struct s_files	*next;
 }					t_files;
 
@@ -62,7 +62,7 @@ int		ft_illegal_opt(t_ls *l);
 t_files	*create_file_elem(char *str);
 t_list	*create_list_elem(char *str);
 void	list_add(t_ls *l, t_list *list);
-void	file_add(t_files **allfiles, char *str, struct stat *file);
+void	file_add(t_files **allfiles, char *str, struct stat file);
 int		ft_error_occured(t_ls *l);
 void	print_files(t_ls *l);
 int		ft_nofiles(t_ls *l);
@@ -73,3 +73,11 @@ void	sort_files(t_files	*files, t_files **sorted);
 void	rsort_files(t_files	*files, t_files **sorted);
 t_files	*pre_sort(t_files **files, t_ls *l);
 void	free_files(t_files **list);
+void	ft_show(t_ls *l, t_files **directories, char *curdirname);
+void	ft_show_l(t_ls *l, t_files **directories, char *curdirname);
+void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname);
+void	ft_recursive(t_ls *l, t_files **directories, char *curdirname);
+int		ft_strlen(const char *str);
+char	*ft_strjoinfname(const char *s1, const char *s2);
+char	*ft_strcat(char *dest, char *src);
+void	ft_strdel(char **str);

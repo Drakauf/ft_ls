@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:36:55 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/20 09:57:56 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/03 01:41:55 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -48,7 +48,6 @@ t_files	*create_file_elem(char *str)
 	if (file)
 	{
 		file->filename = str;
-		file->filestats = NULL;
 		file->next = NULL;
 	return (file);
 	}

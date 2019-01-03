@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:57:35 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/20 11:09:42 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/03 03:11:06 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -30,7 +30,7 @@ void	list_add(t_ls *l, t_list *list)
 	}
 }
 
-void	file_add(t_files **allfiles, char *str, struct stat *files)
+void	file_add(t_files **allfiles, char *str, struct stat files)
 {
 	t_files	*tmp;
 
