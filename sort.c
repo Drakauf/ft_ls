@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:16:11 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 04:19:00 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/03 05:09:51 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -116,6 +116,7 @@ t_files	*pre_sort(t_files **files, t_ls *l)
 		else
 		sort_files(tosort, &sorted);
 		}
+		free((*files)->filename);
 		free(*files);
 		*files = tmp;
 	}

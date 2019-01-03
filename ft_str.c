@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:08:10 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 04:19:03 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/03 05:11:40 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -21,6 +21,23 @@ int		ft_strcmp(const char *s1, const char *s2)
 		s2++;
 	}
 	return ((unsigned char)*s1 - (unsigned char)*s2);
+}
+
+char	*ft_strdup(const char *s)
+{
+	size_t	l;
+	char	*r;
+
+	if (!(r = malloc(sizeof(*r) * (ft_strlen(s) + 1))))
+		return (NULL);
+	l = 0;
+	while (s[l])
+	{
+		r[l] = s[l];
+		l++;
+	}
+	r[l] = '\0';
+	return (r);
 }
 
 char	*ft_strcat(char *dest, char *str)
@@ -50,19 +67,32 @@ void	ft_strdel(char **as)
 	*as = NULL;
 }
 
-char	*ft_strjoinfname(char const *s1, char const *s2)
+char	*ft_strjoinfname(char *s1, char *s2)
 {
 	char	*ret;
 
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
 	dprintf(1, "joining :[%s] and [%s]\n", s1, s2);
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
 	if (!(ret = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 2))))
 		return (NULL);
-	ret[0] = '\0';
-	ret = ft_strcat(ret, (char *)s1);
-	ret = ft_strcat(ret, "/");
-	ret = ft_strcat(ret, (char *)s2);
+	/*ret[0] = '\0';
+	  ret = ft_strcat(ret, (char *)s1);
+	  ret = ft_strcat(ret, "/");
+	  ret = ft_strcat(ret, (char *)s2);*/
+
+	while (s1[i])
+		ret[j++] = s1[i++];
+	ret[j++]='/';
+	i = 0;
+	while(s2[i])
+		ret[j++] = s2[i++];
+	ret[j] = '\0';
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:36:55 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 01:41:55 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/03 05:11:41 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -32,7 +32,7 @@ t_list	*create_list_elem(char *str)
 	list = malloc(sizeof(t_list));
 	if (list)
 	{
-		list->filename = str;
+		list->filename = ft_strdup(str);
 		list->next = NULL;
 	}
 	else
@@ -47,7 +47,7 @@ t_files	*create_file_elem(char *str)
 	file = malloc(sizeof(t_files));
 	if (file)
 	{
-		file->filename = str;
+		file->filename = ft_strdup(str);
 		file->next = NULL;
 	return (file);
 	}

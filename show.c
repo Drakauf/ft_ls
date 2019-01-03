@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 04:19:04 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/03 05:11:38 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -69,14 +69,13 @@ void	getfileinfo(t_ls *l, char *curdirname)
 		directories  = NULL;
 		while ((dir = readdir(d)) != NULL) {
 				stat(dir->d_name, &files);
-				dprintf(1, "file got : %s\n", dir->d_name);
+//				dprintf(1, "file got : %s\n", dir->d_name);
 				file_add(&directories, dir->d_name, files);
 				}
 		closedir(d);
 	directories = pre_sort(&directories, l);
 	ft_show(l, &directories, curdirname);
 	free_files(&directories);
-	ft_strdel(&curdirname);
 	}
 }
 
@@ -89,10 +88,12 @@ void	ft_recursive(t_ls *l, t_files **directories, char *curdirname)
 	while (tmp)
 	{
 		if (S_ISDIR(tmp->filestats.st_mode) && ft_strcmp(".", tmp->filename) != 0 && ft_strcmp("..", tmp->filename) != 0)
-		{	
+		{
+//			dprintf(1, "%s\n", tmp->filename);
 			nextdirname = ft_strjoinfname(curdirname, tmp->filename);
 //			dprintf(1, "%s\n", nextdirname);
 			getfileinfo(l,nextdirname);
+			ft_strdel(&nextdirname);
 		}
 //		else
 	//		printf("file : %s\n", tmp->filename);
