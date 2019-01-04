@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/04 03:46:36 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 05:58:02 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -64,12 +64,39 @@ int		lfname(t_files **directories)
 	return (i);
 }
 
+int	ft_getcolor(t_files *directories)
+{
+
+	struct stat files;
+	struct stat lfiles;
+
+	stat(directories->fullname, &files);
+	lstat(directories->fullname, &lfiles);
+	if (S_ISLNK(lfiles.st_mode))
+	{
+		ft_printf("[magenta]");
+		return (1);
+	}
+	if (S_ISDIR(files.st_mode))
+	{
+		ft_printf("{b}[cyan]");
+		return (1);
+	}
+	if (S_IXUSR & lfiles.st_mode)
+	{
+		ft_printf("[red]");
+		return (1);
+	}
+	return (0);
+}
+
 void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname)
 {
 	t_files *tmp2;
 	int		f;
 	int p;
 	int k;
+	char *c;
 
 	f = lfname(directories);
 	tmp2 = *directories;
@@ -77,7 +104,20 @@ void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname)
 	k = 0;
 	while (tmp2)
 	{
-		ft_printf("%-*s", (f + 1),tmp2->filename);
+/*/		if (S_ISDIR(tmp2->filestats.st_mode))
+		{
+	//		ft_printf("is dir");
+//			if ((tmp2->d))
+	//		{
+				ft_printf("{b}[cyan]%-*s[white]{/0}", (f + 1),tmp2->filename);
+	//		}
+		}		
+		else 
+			ft_printf("%-*s", (f + 1),tmp2->filename);*/
+		if (ft_getcolor(tmp2))
+				ft_printf("%-*s[white]{/0}", (f + 1),tmp2->filename);
+		else
+				ft_printf("%-*s", (f + 1),tmp2->filename);
 		k++;
 		if ((!tmp2->next && k != 0) || k % p == 0)
 		{
@@ -95,18 +135,19 @@ int	getfileinfo(t_ls *l, char *curdirname)
 	DIR *d;
 	struct dirent *dir;
 	t_files	*directories;
+	char	*name;
 
-	stat(curdirname, &files);
-	if (S_ISREG(files.st_mode))
-		return (1);
 	d = opendir(curdirname);
 	if (d)
 	{
 		ft_printf("\n%s:\n", curdirname);
 		directories  = NULL;
-		while ((dir = readdir(d)) != NULL) {
-			stat(dir->d_name, &files);
-			file_add(&directories, dir->d_name, files);
+		while ((dir = readdir(d)) != NULL)
+		{
+			name = ft_strjoinfname(curdirname, dir->d_name);
+			stat(name, &files);
+			file_add(&directories, dir->d_name, files, name);
+			free(name);
 		}
 		closedir(d);
 		directories = pre_sort(&directories, l);
@@ -131,8 +172,8 @@ void	ft_recursive(t_ls *l, t_files **directories, char *curdirname)
 		{
 			nextdirname = ft_strjoinfname(curdirname, tmp->filename);
 			lstat(nextdirname, &files);
-			if (!S_ISLNK(files.st_mode))
-				if (!getfileinfo(l,nextdirname))
+		if (!S_ISLNK(files.st_mode))
+			if (!getfileinfo(l,nextdirname))
 					ft_printf("\n%s:\nls: %s: Permission denied\n", nextdirname, tmp->filename);
 			ft_strdel(&nextdirname);
 		}
@@ -145,8 +186,6 @@ void	ft_show(t_ls *l, t_files **directories, char *curdirname)
 	t_files *test;
 
 	test = *directories;
-	//	if (l->opts[OPT_R] && ft_strcmp(".", curdirname) != 0)
-	//		dprintf(1, "%s:\n", curdirname);
 	if (l->opts[OPT_l])
 		ft_show_l(l, &test, curdirname);
 	else

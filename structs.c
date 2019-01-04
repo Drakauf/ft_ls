@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:36:55 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 05:11:41 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 05:15:35 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -17,7 +17,7 @@ t_files *duplicate_file(t_files *files)
 {
 	t_files *new;
 
-	new = create_file_elem(files->filename);
+	new = create_file_elem(files->filename, files->fullname);
 	if (!new)
 		return (NULL);
 	new->filestats = files->filestats;
@@ -40,7 +40,7 @@ t_list	*create_list_elem(char *str)
 	return (list);
 }
 
-t_files	*create_file_elem(char *str)
+t_files	*create_file_elem(char *str, char *fname)
 {
 	t_files	*file;
 
@@ -48,6 +48,8 @@ t_files	*create_file_elem(char *str)
 	if (file)
 	{
 		file->filename = ft_strdup(str);
+		file->fullname = ft_strdup(fname);
+		file->d = 0;
 		file->next = NULL;
 	return (file);
 	}

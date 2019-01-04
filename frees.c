@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:40:34 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 05:10:47 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 05:54:50 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,6 +22,7 @@ void	free_files(t_files **directories)
 	while (tmp)
 	{
 		free(tmp->filename);
+		free(tmp->fullname);
 		tmp2 = tmp->next;
 		free(tmp);
 		tmp = tmp2;

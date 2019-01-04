@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/04 03:37:25 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 05:13:59 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -43,7 +43,9 @@ typedef	struct		s_list
 typedef	struct		s_files
 {
 	char			*filename;
+	char			*fullname;
 	struct stat		filestats;
+	int				d;
 	struct s_files	*next;
 }					t_files;
 
@@ -62,10 +64,10 @@ t_ls	*create_struct();
 void	free_struct(t_ls *l);
 void	free_list(t_list **list);
 int		ft_illegal_opt(t_ls *l);
-t_files	*create_file_elem(char *str);
+t_files	*create_file_elem(char *str, char *fullname);
 t_list	*create_list_elem(char *str);
 void	list_add(t_ls *l, t_list *list);
-void	file_add(t_files **allfiles, char *str, struct stat file);
+void	file_add(t_files **allfiles, char *str, struct stat file, char *fulname);
 int		ft_error_occured(t_ls *l);
 void	print_files(t_ls *l);
 int		ft_nofiles(t_ls *l);

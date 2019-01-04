@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:57:35 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 05:05:12 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 05:52:56 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -30,13 +30,13 @@ void	list_add(t_ls *l, t_list *list)
 	}
 }
 
-void	file_add(t_files **allfiles, char *str, struct stat files)
+void	file_add(t_files **allfiles, char *str, struct stat files, char *fname)
 {
 	t_files	*tmp;
 
 	if (*allfiles == NULL)
 	{
-		*allfiles = create_file_elem(str);
+		*allfiles = create_file_elem(str, fname);
 		(*allfiles)->filestats = files;
 		(*allfiles)->next = NULL;
 	}
@@ -47,7 +47,7 @@ void	file_add(t_files **allfiles, char *str, struct stat files)
 		{
 			tmp = tmp->next;
 		}
-		tmp->next = create_file_elem(str);
+		tmp->next = create_file_elem(str, fname);
 		(tmp->next)->filestats = files;
 		(tmp->next)->next = NULL;
 	}
