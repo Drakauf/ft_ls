@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/04 05:58:02 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 06:36:22 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -67,17 +67,17 @@ int		lfname(t_files **directories)
 int	ft_getcolor(t_files *directories)
 {
 
-	struct stat files;
+//	struct stat files;
 	struct stat lfiles;
 
-	stat(directories->fullname, &files);
+//	stat(directories->fullname, &files);
 	lstat(directories->fullname, &lfiles);
 	if (S_ISLNK(lfiles.st_mode))
 	{
 		ft_printf("[magenta]");
 		return (1);
 	}
-	if (S_ISDIR(files.st_mode))
+	if (S_ISDIR(directories->filestats.st_mode))
 	{
 		ft_printf("{b}[cyan]");
 		return (1);
