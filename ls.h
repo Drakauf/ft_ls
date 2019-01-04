@@ -6,11 +6,12 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 04:52:31 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 03:37:25 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
+#include <sys/ioctl.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -18,6 +19,8 @@
 #include <string.h>
 #include <dirent.h>
 #include <stdio.h>
+#include "ft_printf/ft_printf.h"
+
 
 #define	OPTLIST "ARalrt" 
 

@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:08:10 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 05:11:40 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/03 23:21:39 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -76,7 +76,7 @@ char	*ft_strjoinfname(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-	dprintf(1, "joining :[%s] and [%s]\n", s1, s2);
+//	dprintf(1, "joining :[%s] and [%s]\n", s1, s2);
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
 	if (!(ret = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 2))))
