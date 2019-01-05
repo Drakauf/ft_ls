@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 08:21:53 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/05 08:37:46 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -46,6 +46,8 @@ int maxfilename(t_lsprint *i, t_ls *l)
 	k = i->name;
 	if (l->opts[OPT_s])
 		k += i->byte + 1;
+	if (l->opts[OPT_i])
+		k += i->inode;
 	if (l->opts[OPT_p])
 		k += 1;
 	if (w.ws_col < k)
@@ -71,11 +73,12 @@ t_lsprint		get_len(t_files **directories, t_ls *l)
 	f.name = 0;
 	f.byte = 0;
 	f.tbyte = 0;
+	f.inode = 0;
 	tmp = *directories;
 	while (tmp)
 	{
 		(f.name < (j = ft_strlen(tmp->filename) + 1)) ? f.name = j : 0;
-		f.tname += j;
+		(f.inode < (j = ft_intlen(tmp->filelstats.st_ino))) ? f.inode = j: 0;
 		if (l->opts[OPT_k])
 			(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks/2))) ? f.byte = j: 0;
 		else
@@ -89,19 +92,22 @@ t_lsprint		get_len(t_files **directories, t_ls *l)
 
 void	print_s(t_ls *l, t_lsprint *f, t_files *directories)
 {
+	if (f->tbyte != -1 && l->opts[OPT_s])
+	{	
+		if (l->opts[OPT_k])
+			ft_printf("total %d\n", f->tbyte/2);
+		else
+			(f->tbyte != -1) ? ft_printf("total %d\n", f->tbyte): 0;
+		f->tbyte = -1;
+	}	
+	if (l->opts[OPT_i])
+			ft_printf("%*d ", f->inode, directories->filelstats.st_ino);
 	if (l->opts[OPT_s])
 	{
 		if (l->opts[OPT_k])
-		{
-			(f->tbyte != -1) ? ft_printf("total %d\n", f->tbyte/2): 0;
 			ft_printf("%*d ", f->byte, directories->filelstats.st_blocks/2);
-		}
 		else
-		{
-			(f->tbyte != -1) ? ft_printf("total %d\n", f->tbyte): 0;
 			ft_printf("%*d ", f->byte, directories->filelstats.st_blocks);
-		}
-		f->tbyte = -1;
 	}
 }
 
