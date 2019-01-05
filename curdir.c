@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 07:21:00 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/04 05:12:04 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/05 00:28:25 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -56,13 +56,12 @@ int ft_nofiles(t_ls *l)
 		while ((dir = readdir(d)) != NULL)
 		{
 			name = ft_strjoinfname(".", dir->d_name);
-			stat(name, &files);
-			file_add(&directories, dir->d_name, files, name);
+			addfile(l, &directories, dir->d_name, name);
 			free(name);
 		}
 		closedir(d);
 	}
-	directories = pre_sort(&directories, l);
+	directories = to_sort(&directories, l);
 	ft_show(l, &directories,  ".");
 	free_files(&directories);
 	return(0);

@@ -1,2 +1,7 @@
-put stats and lstat in the struct when it's created
-opta when reading so no need to sort after.
+DONE : put stats and lstat in the struct when it's created
+DONE : opta when reading so no need to sort after.
+
+-R		0.340	=>	0.280
+-Rr		0.345	=>	0.320
+-Ra		~3.300	=>	2.500
+-Rar	~3.100	=>	2.600
