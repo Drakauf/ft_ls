@@ -5,3 +5,5 @@ DONE : opta when reading so no need to sort after.
 -Rr		0.345	=>	0.320
 -Ra		~3.300	=>	2.500
 -Rar	~3.100	=>	2.600
+
+Last option for -tc -tu.
