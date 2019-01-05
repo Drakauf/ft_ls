@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 00:19:33 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/05 04:24:23 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,23 +22,30 @@
 #include "ft_printf/ft_printf.h"
 
 
-#define	OPTLIST "ARalrt" 
+#define	OPTLIST "ARaklrst" 
 
-#define OPT_TOT	6
+#define OPT_TOT	8
 #define OPT_A	0
 #define OPT_R	1
 #define OPT_a	2
-#define OPT_l	3
-#define OPT_r	4
-#define OPT_t	5
-
-
+#define OPT_k	3
+#define OPT_l	4
+#define OPT_r	5
+#define OPT_s	6
+#define OPT_t	7
 
 typedef	struct		s_list
 {
 	char			*filename;
 	struct s_list	*next;
 }					t_list;
+
+typedef	struct		s_lsprint
+{
+	int				name;
+	int				byte;
+	int				tbyte;
+}					t_lsprint;
 
 typedef	struct		s_files
 {

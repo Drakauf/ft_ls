@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 01:36:11 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/05 04:24:20 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -36,48 +36,86 @@ void	ft_show_l(t_ls *l, t_files **directories, char *curdirname)
 	}
 }
 
-int maxfilename(int i)
+int maxfilename(t_lsprint i, t_ls *l)
 {
+	int k;
 	struct winsize w;
 	ioctl(0, TIOCGWINSZ, &w);
 
-	if (w.ws_col < i)
+	k = i.name;
+	if (l->opts[OPT_s])
+		k += i.byte + 1;
+	if (w.ws_col < k)
 		return (1);
-	return ( w.ws_col / (i + 1));
+	return ( w.ws_col / (k + 1));
 }
 
-int		lfname(t_files **directories)
+int		ft_intlen(int n)
 {
-	int i;
-	int j;
-	t_files *tmp;
+	if (n == 0)
+			return (1);
+	return (1 + ft_intlen(n / 10));
+}
 
-	i = 0;
+t_lsprint		get_len(t_files **directories, t_ls *l)
+{
+	int			i;
+	int			j;
+	t_files		*tmp;
+	t_lsprint	f;
+
+
+	f.name = 0;
+	f.byte = 0;
+	f.tbyte = 0;
 	tmp = *directories;
 	while (tmp)
 	{
-		j = ft_strlen(tmp->filename);
-		(i < j) ? i = j : 0;
+		(f.name < (j = ft_strlen(tmp->filename) + 1)) ? f.name = j : 0;
+		if (l->opts[OPT_k])
+		(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks/2))) ? f.byte = j: 0;
+		else
+		(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks))) ? f.byte = j: 0;
+		f.tbyte += tmp->filelstats.st_blocks;
 		tmp = tmp->next;
 	}
-	return (i);
+	return (f);
 }
 
-int	ft_getcolor(t_files *directories, int f)
+void	print_s(t_ls *l, t_lsprint *f, t_files *directories)
 {
+	if (l->opts[OPT_s])
+	{
+		if (l->opts[OPT_k])
+		{
+			(f->tbyte != -1) ? ft_printf("total %d\n", f->tbyte/2): 0;
+			ft_printf("%*d ", f->byte, directories->filelstats.st_blocks/2);
+		}
+		else
+		{
+			(f->tbyte != -1) ? ft_printf("total %d\n", f->tbyte): 0;
+			ft_printf("%*d ", f->byte, directories->filelstats.st_blocks);
+		}
+		f->tbyte = -1;
+	}
+}
+
+int	ft_getcolor(t_files *directories, t_lsprint *f, t_ls *l)
+{
+	print_s(l, f, directories);
 	if (S_ISLNK(directories->filelstats.st_mode))
 	{
-		ft_printf("[magenta]%-*s[white]", (f + 1),directories->filename);
-		return (1);
+	ft_printf("[magenta]%-*s[white]", f->name, directories->filename);
+	return (1);
 	}
 	if (S_ISDIR(directories->filestats.st_mode))
 	{
-		ft_printf("[cyan]{b}%-*s[white]{/0}", (f + 1),directories->filename);
+		ft_printf("[cyan]{b}%-*s[white]{/0}", f->name, directories->filename);
 		return (1);
 	}
 	if (S_IXUSR & directories->filelstats.st_mode)
 	{
-		ft_printf("[red]%-*s[white]", (f + 1),directories->filename);
+		ft_printf("[red]%-*s[white]", f->name, directories->filename);
 		return (1);
 	}
 	return (0);
@@ -85,20 +123,20 @@ int	ft_getcolor(t_files *directories, int f)
 
 void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname)
 {
-	t_files *tmp2;
-	int		f;
+	t_files 	*tmp2;
+	t_lsprint	f;
 	int p;
 	int k;
 	char *c;
 
-	f = lfname(directories);
+	f = get_len(directories, l);
 	tmp2 = *directories;
-	p = maxfilename(f);
+	p = maxfilename(f, l);
 	k = 0;
 	while (tmp2)
 	{
-		if (!ft_getcolor(tmp2, f))
-				ft_printf("%-*s", (f + 1),tmp2->filename);
+		if (!ft_getcolor(tmp2, &f, l))
+			ft_printf("%-*s", (f.name),tmp2->filename);
 		k++;
 		if ((!tmp2->next && k != 0) || k % p == 0)
 		{
@@ -157,8 +195,8 @@ void	ft_recursive(t_ls *l, t_files **directories, char *curdirname)
 		{
 			nextdirname = ft_strjoinfname(curdirname, tmp->filename);
 			lstat(nextdirname, &files);
-		if (!S_ISLNK(files.st_mode))
-			if (!getfileinfo(l,nextdirname))
+			if (!S_ISLNK(files.st_mode))
+				if (!getfileinfo(l,nextdirname))
 					ft_printf("\n%s:\nls: %s: Permission denied\n", nextdirname, tmp->filename);
 			ft_strdel(&nextdirname);
 		}

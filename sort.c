@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:16:11 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 01:36:47 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/05 02:20:07 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -60,6 +60,7 @@ int		ft_aopt(t_ls *l, char *files)
 
 void	sort_opt(t_ls *l, t_files **tosort, t_files **sorted)
 {
+	sort_files(*tosort, sorted);
 }
 
 t_files	*sort_r(t_files **files, t_ls *l)
@@ -98,8 +99,7 @@ t_files	*pre_sort(t_files **files, t_ls *l)
 
 t_files *to_sort(t_files **files, t_ls *l)
 {
-//	if (l->opts[OPT_r])
-//		*files = pre_sort(files, l);
+	*files = pre_sort(files, l);
 	if (l->opts[OPT_r])
 		*files = sort_r(files, l);
 	return (*files);
