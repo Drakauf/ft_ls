@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 04:24:23 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/05 08:21:17 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,17 +22,27 @@
 #include "ft_printf/ft_printf.h"
 
 
-#define	OPTLIST "ARaklrst" 
+#define	OPTLIST "1ARaklrstCdcguSpm" 
 
-#define OPT_TOT	8
-#define OPT_A	0
-#define OPT_R	1
-#define OPT_a	2
-#define OPT_k	3
-#define OPT_l	4
-#define OPT_r	5
-#define OPT_s	6
-#define OPT_t	7
+#define OPT_TOT	17
+#define OPT_1	0
+#define OPT_A	1
+#define OPT_R	2
+#define OPT_a	3
+#define OPT_k	4
+#define OPT_l	5
+#define OPT_r	6
+#define OPT_s	7
+#define OPT_t	8
+#define OPT_C	9
+#define OPT_d	10
+#define OPT_c	11
+#define OPT_g	12
+#define OPT_u	13
+#define OPT_S	14
+#define OPT_p	15
+#define	OPT_m	16
+
 
 typedef	struct		s_list
 {
@@ -43,6 +53,7 @@ typedef	struct		s_list
 typedef	struct		s_lsprint
 {
 	int				name;
+	int				tname;
 	int				byte;
 	int				tbyte;
 }					t_lsprint;
@@ -66,6 +77,7 @@ typedef struct		s_ls
 	char			c_error;
 	t_files			*dirnofil;
 	t_list			*filnofil;
+	char			out_opt;
 }					t_ls;
 
 t_ls	*create_struct();

@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 04:24:20 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/05 08:21:53 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -36,24 +36,27 @@ void	ft_show_l(t_ls *l, t_files **directories, char *curdirname)
 	}
 }
 
-int maxfilename(t_lsprint i, t_ls *l)
+int maxfilename(t_lsprint *i, t_ls *l)
 {
 	int k;
 	struct winsize w;
 	ioctl(0, TIOCGWINSZ, &w);
 
-	k = i.name;
+
+	k = i->name;
 	if (l->opts[OPT_s])
-		k += i.byte + 1;
+		k += i->byte + 1;
+	if (l->opts[OPT_p])
+		k += 1;
 	if (w.ws_col < k)
 		return (1);
-	return ( w.ws_col / (k + 1));
+	return (w.ws_col / (k + 1));
 }
 
 int		ft_intlen(int n)
 {
 	if (n == 0)
-			return (1);
+		return (1);
 	return (1 + ft_intlen(n / 10));
 }
 
@@ -72,13 +75,15 @@ t_lsprint		get_len(t_files **directories, t_ls *l)
 	while (tmp)
 	{
 		(f.name < (j = ft_strlen(tmp->filename) + 1)) ? f.name = j : 0;
+		f.tname += j;
 		if (l->opts[OPT_k])
-		(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks/2))) ? f.byte = j: 0;
+			(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks/2))) ? f.byte = j: 0;
 		else
-		(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks))) ? f.byte = j: 0;
+			(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks))) ? f.byte = j: 0;
 		f.tbyte += tmp->filelstats.st_blocks;
 		tmp = tmp->next;
 	}
+	l->opts[OPT_p] ? f.name++: 0;
 	return (f);
 }
 
@@ -100,25 +105,31 @@ void	print_s(t_ls *l, t_lsprint *f, t_files *directories)
 	}
 }
 
-int	ft_getcolor(t_files *directories, t_lsprint *f, t_ls *l)
+void	printf_p(t_files *directories, t_lsprint *f, t_ls *l)
+{
+	if (l->opts[OPT_p])
+		ft_printf("[cyan]{b}%s{/0}/", directories->filename);
+	else
+	ft_printf("[cyan]{b}%s{/0}",directories->filename);
+}
+
+void	ft_printname(t_files *directories, t_lsprint *f, t_ls *l)
 {
 	print_s(l, f, directories);
 	if (S_ISLNK(directories->filelstats.st_mode))
-	{
-	ft_printf("[magenta]%-*s[white]", f->name, directories->filename);
-	return (1);
-	}
-	if (S_ISDIR(directories->filestats.st_mode))
-	{
-		ft_printf("[cyan]{b}%-*s[white]{/0}", f->name, directories->filename);
-		return (1);
-	}
-	if (S_IXUSR & directories->filelstats.st_mode)
-	{
-		ft_printf("[red]%-*s[white]", f->name, directories->filename);
-		return (1);
-	}
-	return (0);
+			ft_printf("[magenta]%s{/0}", directories->filename);
+	else if (S_ISDIR(directories->filestats.st_mode))
+	printf_p(directories, f, l);
+	else if (S_IXUSR & directories->filelstats.st_mode)
+		ft_printf("[red]%s{/0}", directories->filename);
+	else
+		ft_printf("%s",  directories->filename);
+	if (l->opts[OPT_m])
+		ft_printf(", ");
+	else if (l->opts[OPT_p] && S_ISDIR(directories->filestats.st_mode))
+		ft_printf("%*c", (f->name - ft_strlen(directories->filename)), '\0');
+	else
+		ft_printf("%*c", f->name - ft_strlen(directories->filename), '\0');
 }
 
 void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname)
@@ -131,14 +142,13 @@ void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname)
 
 	f = get_len(directories, l);
 	tmp2 = *directories;
-	p = maxfilename(f, l);
+	p = maxfilename(&f, l);
 	k = 0;
 	while (tmp2)
 	{
-		if (!ft_getcolor(tmp2, &f, l))
-			ft_printf("%-*s", (f.name),tmp2->filename);
-		k++;
-		if ((!tmp2->next && k != 0) || k % p == 0)
+		ft_printname(tmp2, &f, l);
+			k++;
+		if ((!tmp2->next && k != 0) || (k % p == 0 && !l->opts[OPT_m]) || (l->out_opt == '1'))
 		{
 			k = 0;
 			ft_printf("\n");
@@ -209,10 +219,10 @@ void	ft_show(t_ls *l, t_files **directories, char *curdirname)
 	t_files *test;
 
 	test = *directories;
-	if (l->opts[OPT_l])
+	if (l->out_opt == 'l')
 		ft_show_l(l, &test, curdirname);
 	else
 		ft_show_nl(l,&test, curdirname);
-	if (l->opts[OPT_R])
+	if (l->opts[OPT_R] && !l->opts[OPT_d])
 		ft_recursive(l, directories, curdirname);
 }
