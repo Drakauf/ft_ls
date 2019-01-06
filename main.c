@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:31:11 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 08:21:54 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/06 22:48:18 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,6 +22,8 @@ int	put_in_table(char c, t_ls *l)
 	{
 		if (c == 'C' || c == '1' || c == 'l' || c == 'm')
 			l->out_opt = c;
+		if (c == 'u' || c == 'c')
+			l->time_opt = c;
 		if (OPTLIST[i] == c)
 		{
 			l->opts[i] = 1;

@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 08:28:25 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/06 22:50:11 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,9 +22,9 @@
 #include "ft_printf/ft_printf.h"
 
 
-#define	OPTLIST "1ARaklrstCdcguSpmi" 
+#define	OPTLIST "1ARaklrstCdcguSpmif" 
 
-#define OPT_TOT	18
+#define OPT_TOT	19
 #define OPT_1	0
 #define OPT_A	1
 #define OPT_R	2
@@ -43,6 +43,7 @@
 #define OPT_p	15
 #define	OPT_m	16
 #define	OPT_i	17
+#define	OPT_f	18
 
 
 typedef	struct		s_list
@@ -79,6 +80,7 @@ typedef struct		s_ls
 	t_files			*dirnofil;
 	t_list			*filnofil;
 	char			out_opt;
+	char			time_opt;
 }					t_ls;
 
 t_ls	*create_struct();

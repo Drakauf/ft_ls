@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:16:11 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 07:03:31 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/06 22:51:41 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -169,6 +169,8 @@ int		ft_aopt(t_ls *l, char *files)
 			return (1);
 		return (0);
 	}
+	if (l->opts[OPT_f])
+		return (1);
 	if (files[0] == '.')
 	{
 		if (!l->opts[OPT_A] && !l->opts[OPT_a])
@@ -184,11 +186,10 @@ void	sort_opt(t_ls *l, t_files **tosort, t_files **sorted)
 {
 	if (l->opts[OPT_S])
 		sort_size(*tosort, sorted);
-	else if (l->opts[OPT_c] && l->opts[OPT_t])
+	else if (l->opts[OPT_c] && l->time_opt == 'c' && l->opts[OPT_t])
 		sort_c(*tosort, sorted);
-	else if (l->opts[OPT_u] && l->opts[OPT_t])
+	else if (l->opts[OPT_u] && l->time_opt == 'u' && l->opts[OPT_t])
 		sort_u(*tosort, sorted);
-	//	sort_files(*tosort, sorted);
 	else if (l->opts[OPT_t])
 		sort_t(*tosort, sorted);
 	else
@@ -231,7 +232,8 @@ t_files	*pre_sort(t_files **files, t_ls *l)
 
 t_files *to_sort(t_files **files, t_ls *l)
 {
-	*files = pre_sort(files, l);
+	if (!l->opts[OPT_f])
+		*files = pre_sort(files, l);
 	if (l->opts[OPT_r])
 		*files = sort_r(files, l);
 	return (*files);
