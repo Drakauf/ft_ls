@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:36:55 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 00:16:07 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/07 05:47:25 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -74,8 +74,7 @@ t_ls	*create_struct()
 	l->last_opt = 0;
 	l->d_ = 1;
 	l->files = NULL;
-	l->dirnofil = NULL;
-	l->filnofil = NULL;
+	l->errors = NULL;
 	int i;
 
 	i = 0;

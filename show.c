@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/07 05:23:10 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/07 06:03:07 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -24,21 +24,11 @@ void	ft_putstr(char *str)
 		i++;
 	}
 }
-/*
-void	ft_show_l(t_ls *l, t_files **directories)
-{
-	t_files *tmp2;
-
-	tmp2 = *directories;
-	while (tmp2)
-	{
-		tmp2 = tmp2->next;
-	}
-}*/
 
 int maxfilename(t_lsprint *i, t_ls *l)
 {
 	int k;
+	int	j;
 	struct winsize w;
 	ioctl(0, TIOCGWINSZ, &w);
 
@@ -52,7 +42,10 @@ int maxfilename(t_lsprint *i, t_ls *l)
 		k += 1;
 	if (w.ws_col < k)
 		return (1);
-	return (w.ws_col / (k + 1));
+	j = w.ws_col / (k + 1);
+	if (j == 0)
+		return (1);
+	return (j);
 }
 
 int		ft_intlen(int n)
@@ -114,7 +107,7 @@ void	printf_p(t_files *directories, t_lsprint *f, t_ls *l)
 
 void	ft_printname(t_files *directories, t_lsprint *f, t_ls *l)
 {
-	if (!l->opts[OPT_l] && !l->opts[OPT_g] && !l->opts[OPT_n])
+	if (l->out_opt != 'l' && l->out_opt != 'g' && l->out_opt != 'n')
 		print_s(l, f, directories);
 	if (S_ISLNK(directories->filelstats.st_mode))
 			ft_printf("[magenta]%s{/0}", directories->filename);

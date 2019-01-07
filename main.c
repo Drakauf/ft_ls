@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:31:11 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/06 23:58:00 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/07 05:55:08 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -90,6 +90,28 @@ int		parsing_all(char **ac, t_ls *l)
 	return (2);
 }
 
+/********************/
+
+void	ft_printfiles(t_list *files)
+{
+	t_list *tmp;
+
+	tmp = files;
+	while (tmp)
+	{
+		ft_printf("%s\n", tmp->filename);
+		tmp = tmp->next;
+	}
+}
+
+/********************/
+
+void	ft_argndle(t_list *files)
+{
+	t_list	*tmp;
+
+}
+
 int main(int ac, char **av)
 {
 	t_ls	*l;
@@ -103,6 +125,11 @@ int main(int ac, char **av)
 		return(ft_illegal_opt(l));
 		if (!l->files && res != 1)
 			res = ft_nofiles(l);
+	if (l->files)
+	{
+		ft_printfiles(l->files);
+		ft_argndle(l->files);
+	}
 	//	if (l->files)
 	//		res = sort_argfiles(l);
 	//		else if (res != 1)

@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/07 04:20:34 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/07 05:48:00 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -86,8 +86,7 @@ typedef struct		s_ls
 	int				*opts;
 	int				d_;
 	char			c_error;
-	t_files			*dirnofil;
-	t_list			*filnofil;
+	t_list			*errors;
 	char			out_opt;
 	char			time_opt;
 }					t_ls;
