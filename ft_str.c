@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:08:10 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/03 23:21:39 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/07 02:21:06 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -76,16 +76,10 @@ char	*ft_strjoinfname(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-//	dprintf(1, "joining :[%s] and [%s]\n", s1, s2);
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
 	if (!(ret = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 2))))
 		return (NULL);
-	/*ret[0] = '\0';
-	  ret = ft_strcat(ret, (char *)s1);
-	  ret = ft_strcat(ret, "/");
-	  ret = ft_strcat(ret, (char *)s2);*/
-
 	while (s1[i])
 		ret[j++] = s1[i++];
 	ret[j++]='/';
@@ -107,3 +101,5 @@ int		ft_strlen(const char *str)
 		s++;
 	return (s);
 }
+
+

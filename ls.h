@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 04:07:09 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/06 22:50:11 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/07 04:20:34 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,15 +16,20 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/xattr.h>
 #include <string.h>
 #include <dirent.h>
 #include <stdio.h>
+#include <pwd.h>
+#include <grp.h>
+#include <sys/acl.h>
+#include <time.h>
 #include "ft_printf/ft_printf.h"
 
 
-#define	OPTLIST "1ARaklrstCdcguSpmif" 
+#define	OPTLIST "1ARaklrstCdcguSpmifn" 
 
-#define OPT_TOT	19
+#define OPT_TOT	20
 #define OPT_1	0
 #define OPT_A	1
 #define OPT_R	2
@@ -44,6 +49,7 @@
 #define	OPT_m	16
 #define	OPT_i	17
 #define	OPT_f	18
+#define	OPT_n	19
 
 
 typedef	struct		s_list
@@ -58,6 +64,9 @@ typedef	struct		s_lsprint
 	int				byte;
 	int				tbyte;
 	int				inode;
+	int				links;
+	int				groups;
+	int				size;
 }					t_lsprint;
 
 typedef	struct		s_files
@@ -102,8 +111,8 @@ void	rsort_files(t_files	*files, t_files **sorted);
 t_files	*pre_sort(t_files **files, t_ls *l);
 void	free_files(t_files **list);
 void	ft_show(t_ls *l, t_files **directories, char *curdirname);
-void	ft_show_l(t_ls *l, t_files **directories, char *curdirname);
-void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname);
+void	ft_show_line(t_ls *l, t_files **directories);
+void	ft_show_column(t_ls *l, t_files **directories);
 void	ft_recursive(t_ls *l, t_files **directories, char *curdirname);
 int		ft_strlen(const char *str);
 char	*ft_strjoinfname(char *s1, char *s2);
@@ -113,3 +122,8 @@ char	*ft_strdup(const char *s);
 int		ft_aopt(t_ls *l, char *str);
 void	addfile(t_ls *l, t_files **directories, char *dirname, char *fullname);
 t_files	*to_sort(t_files **files, t_ls *l);
+void	print_s(t_ls *l, t_lsprint *f, t_files *directories);
+int		ft_intlen(int n);
+void	get_blocks(t_lsprint *f, t_files *files, t_ls *l);
+void	ft_create_lsprint(t_lsprint *f);
+void	ft_printname(t_files *file, t_lsprint *f, t_ls *ls);

@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 08:37:46 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/07 05:23:10 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -24,8 +24,8 @@ void	ft_putstr(char *str)
 		i++;
 	}
 }
-
-void	ft_show_l(t_ls *l, t_files **directories, char *curdirname)
+/*
+void	ft_show_l(t_ls *l, t_files **directories)
 {
 	t_files *tmp2;
 
@@ -34,7 +34,7 @@ void	ft_show_l(t_ls *l, t_files **directories, char *curdirname)
 	{
 		tmp2 = tmp2->next;
 	}
-}
+}*/
 
 int maxfilename(t_lsprint *i, t_ls *l)
 {
@@ -57,32 +57,25 @@ int maxfilename(t_lsprint *i, t_ls *l)
 
 int		ft_intlen(int n)
 {
-	if (n == 0)
+	if (n <= 9)
 		return (1);
 	return (1 + ft_intlen(n / 10));
 }
 
-t_lsprint		get_len(t_files **directories, t_ls *l)
+t_lsprint		get_len_col(t_files **directories, t_ls *l)
 {
 	int			i;
 	int			j;
 	t_files		*tmp;
 	t_lsprint	f;
 
-
-	f.name = 0;
-	f.byte = 0;
-	f.tbyte = 0;
-	f.inode = 0;
+	ft_create_lsprint(&f);
 	tmp = *directories;
 	while (tmp)
 	{
 		(f.name < (j = ft_strlen(tmp->filename) + 1)) ? f.name = j : 0;
 		(f.inode < (j = ft_intlen(tmp->filelstats.st_ino))) ? f.inode = j: 0;
-		if (l->opts[OPT_k])
-			(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks/2))) ? f.byte = j: 0;
-		else
-			(f.byte < (j = ft_intlen(tmp->filelstats.st_blocks))) ? f.byte = j: 0;
+		get_blocks(&f, tmp, l);
 		f.tbyte += tmp->filelstats.st_blocks;
 		tmp = tmp->next;
 	}
@@ -92,7 +85,7 @@ t_lsprint		get_len(t_files **directories, t_ls *l)
 
 void	print_s(t_ls *l, t_lsprint *f, t_files *directories)
 {
-	if (f->tbyte != -1 && l->opts[OPT_s])
+	if (f->tbyte != -1 && (l->opts[OPT_s] || l->opts[OPT_l] || l->opts[OPT_g] || l->opts[OPT_n]))
 	{	
 		if (l->opts[OPT_k])
 			ft_printf("total %d\n", f->tbyte/2);
@@ -121,7 +114,8 @@ void	printf_p(t_files *directories, t_lsprint *f, t_ls *l)
 
 void	ft_printname(t_files *directories, t_lsprint *f, t_ls *l)
 {
-	print_s(l, f, directories);
+	if (!l->opts[OPT_l] && !l->opts[OPT_g] && !l->opts[OPT_n])
+		print_s(l, f, directories);
 	if (S_ISLNK(directories->filelstats.st_mode))
 			ft_printf("[magenta]%s{/0}", directories->filename);
 	else if (S_ISDIR(directories->filestats.st_mode))
@@ -133,12 +127,12 @@ void	ft_printname(t_files *directories, t_lsprint *f, t_ls *l)
 	if (l->opts[OPT_m])
 		ft_printf(", ");
 	else if (l->opts[OPT_p] && S_ISDIR(directories->filestats.st_mode))
-		ft_printf("%*c", (f->name - ft_strlen(directories->filename)), '\0');
+		ft_printf("%*c", (f->name - ft_strlen(directories->filename)+1), '\0');
 	else
-		ft_printf("%*c", f->name - ft_strlen(directories->filename), '\0');
+		ft_printf("%*c", (f->name - ft_strlen(directories->filename)+1), '\0');
 }
 
-void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname)
+void	ft_show_column(t_ls *l, t_files **directories)
 {
 	t_files 	*tmp2;
 	t_lsprint	f;
@@ -146,7 +140,7 @@ void	ft_show_nl(t_ls *l, t_files **directories, char *curdirname)
 	int k;
 	char *c;
 
-	f = get_len(directories, l);
+	f = get_len_col(directories, l);
 	tmp2 = *directories;
 	p = maxfilename(&f, l);
 	k = 0;
@@ -225,10 +219,10 @@ void	ft_show(t_ls *l, t_files **directories, char *curdirname)
 	t_files *test;
 
 	test = *directories;
-	if (l->out_opt == 'l')
-		ft_show_l(l, &test, curdirname);
+	if (l->out_opt == 'l' || l->out_opt == 'g' || l->out_opt == 'n')
+		ft_show_line(l, &test);
 	else
-		ft_show_nl(l,&test, curdirname);
+		ft_show_column(l,&test);
 	if (l->opts[OPT_R] && !l->opts[OPT_d])
 		ft_recursive(l, directories, curdirname);
 }
