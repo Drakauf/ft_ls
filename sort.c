@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:16:11 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/06 22:51:41 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 05:22:26 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -162,8 +162,7 @@ void	sort_t(t_files	*files, t_files **sorted)
 
 int		ft_aopt(t_ls *l, char *files)
 {
-
-	if (l->opts[OPT_d])
+	if (l->opts[OPT_d] && l->files == NULL)
 	{
 		if (ft_strcmp(files, ".") == 0)
 			return (1);
@@ -179,7 +178,8 @@ int		ft_aopt(t_ls *l, char *files)
 			return(0);
 		if (ft_strcmp(files, "..") == 0 && !l->opts[OPT_a])
 			return(0);
-	}return (1);
+	}
+	return (1);
 }
 
 void	sort_opt(t_ls *l, t_files **tosort, t_files **sorted)
@@ -196,7 +196,7 @@ void	sort_opt(t_ls *l, t_files **tosort, t_files **sorted)
 		sort_files(*tosort, sorted);
 }
 
-t_files	*sort_r(t_files **files, t_ls *l)
+t_files	*sort_r(t_files **files)
 {
 	t_files	*sorted;
 	t_files *tmp;
@@ -235,6 +235,6 @@ t_files *to_sort(t_files **files, t_ls *l)
 	if (!l->opts[OPT_f])
 		*files = pre_sort(files, l);
 	if (l->opts[OPT_r])
-		*files = sort_r(files, l);
+		*files = sort_r(files);
 	return (*files);
 }

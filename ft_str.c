@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:08:10 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/07 02:21:06 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 05:16:46 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -67,10 +67,27 @@ void	ft_strdel(char **as)
 	*as = NULL;
 }
 
+char	*joinracine(char *s2)
+{
+	int i;
+	char *ret;
+
+	i = 0;
+	if (!(ret = malloc(sizeof(char) * (ft_strlen(s2) + 2))))
+		return (NULL);
+	ret[0] = '/';
+	while (s2[i])
+	{
+		ret[i + 1] = s2[i];
+		i++;
+	}
+	ret[i+1] = '\0';
+	return (ret);
+}
+
 char	*ft_strjoinfname(char *s1, char *s2)
 {
 	char	*ret;
-
 	int i;
 	int j;
 
@@ -78,6 +95,8 @@ char	*ft_strjoinfname(char *s1, char *s2)
 	j = 0;
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
+	if (ft_strcmp(s1, "/") == 0)
+		return (joinracine(s2));
 	if (!(ret = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 2))))
 		return (NULL);
 	while (s1[i])

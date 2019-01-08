@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:40:34 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/04 05:54:50 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 03:55:28 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,6 +40,11 @@ void	free_struct(t_ls *l)
 			free_list(&l->files);
 		if (l->files)
 			free(l->files);
+		if (l->errors)
+			free_list(&l->errors);
+		if (l->errors)
+			free(l->errors);
+
 		free(l);
 	}
 }

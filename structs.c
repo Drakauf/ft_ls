@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:36:55 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/07 05:47:25 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 04:38:25 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -66,6 +66,7 @@ t_files	*create_file_elem(char *str, char *fname)
 t_ls	*create_struct()
 {
 	t_ls *l;
+	int i;
 
 	if (!(l = malloc(sizeof(t_ls))))
 		return (NULL);
@@ -73,10 +74,9 @@ t_ls	*create_struct()
 		return (NULL);
 	l->last_opt = 0;
 	l->d_ = 1;
+	l->dir = 0;
 	l->files = NULL;
 	l->errors = NULL;
-	int i;
-
 	i = 0;
 	while (i < OPT_TOT)
 		l->opts[i++] = 0;

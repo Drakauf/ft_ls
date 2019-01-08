@@ -6,43 +6,15 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 07:21:00 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/05 03:45:15 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 05:21:38 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-/*
-   void	ft_nofiledir(t_files **directories, char *str, struct stat *files)
-   {
-   t_files		*directory;
-
-   directory = create_file_elem(str);
-   directory->filestats = files;
-   file_add(directories, &directory);
-   }
-   */
-/*
-void	free_files(t_files **directories)
-{
-	t_files *tmp;
-	t_files *tmp2;
-
-	tmp = *directories;
-	while (tmp)
-	{
-		tmp2 = tmp->next;
-		free(tmp);
-		tmp = tmp2;
-	}
-	*directories = NULL;
-}
-*/
-
 int ft_nofiles(t_ls *l)
 {
-	struct stat	files;
 	DIR *d;
 	struct dirent *dir;
 	t_files		*directories;

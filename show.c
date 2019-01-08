@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/02 23:32:12 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/07 06:03:07 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 05:25:38 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -57,7 +57,6 @@ int		ft_intlen(int n)
 
 t_lsprint		get_len_col(t_files **directories, t_ls *l)
 {
-	int			i;
 	int			j;
 	t_files		*tmp;
 	t_lsprint	f;
@@ -68,8 +67,7 @@ t_lsprint		get_len_col(t_files **directories, t_ls *l)
 	{
 		(f.name < (j = ft_strlen(tmp->filename) + 1)) ? f.name = j : 0;
 		(f.inode < (j = ft_intlen(tmp->filelstats.st_ino))) ? f.inode = j: 0;
-		get_blocks(&f, tmp, l);
-		f.tbyte += tmp->filelstats.st_blocks;
+		get_blocks(&f, tmp);
 		tmp = tmp->next;
 	}
 	l->opts[OPT_p] ? f.name++: 0;
@@ -97,7 +95,7 @@ void	print_s(t_ls *l, t_lsprint *f, t_files *directories)
 	}
 }
 
-void	printf_p(t_files *directories, t_lsprint *f, t_ls *l)
+void	printf_p(t_files *directories, t_ls *l)
 {
 	if (l->opts[OPT_p])
 		ft_printf("[cyan]{b}%s{/0}/", directories->filename);
@@ -112,7 +110,7 @@ void	ft_printname(t_files *directories, t_lsprint *f, t_ls *l)
 	if (S_ISLNK(directories->filelstats.st_mode))
 			ft_printf("[magenta]%s{/0}", directories->filename);
 	else if (S_ISDIR(directories->filestats.st_mode))
-	printf_p(directories, f, l);
+	printf_p(directories, l);
 	else if (S_IXUSR & directories->filelstats.st_mode)
 		ft_printf("[red]%s{/0}", directories->filename);
 	else
@@ -131,7 +129,6 @@ void	ft_show_column(t_ls *l, t_files **directories)
 	t_lsprint	f;
 	int p;
 	int k;
-	char *c;
 
 	f = get_len_col(directories, l);
 	tmp2 = *directories;
@@ -167,11 +164,13 @@ int	getfileinfo(t_ls *l, char *curdirname)
 	d = opendir(curdirname);
 	if (d)
 	{
-		ft_printf("\n%s:\n", curdirname);
+		l->dir == 0 ? ft_printf("\n%s:\n", curdirname): 0;
+		l->dir != 0 ? l->dir = 0: 0;
 		directories  = NULL;
 		while ((dir = readdir(d)) != NULL)
 		{
 			fullname = ft_strjoinfname(curdirname, dir->d_name);
+			dprintf(1, "%s + %s = %s\n", curdirname, dir->d_name, fullname);
 			addfile(l, &directories, dir->d_name, fullname);
 			free(fullname);
 		}
@@ -189,7 +188,6 @@ void	ft_recursive(t_ls *l, t_files **directories, char *curdirname)
 	t_files *tmp;
 	char	*nextdirname;
 	struct stat files;
-	DIR *d;
 
 	tmp = *directories;
 	while (tmp)

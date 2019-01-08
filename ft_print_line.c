@@ -6,14 +6,14 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/06 23:29:13 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/07 05:23:12 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 05:44:00 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-void	get_blocks(t_lsprint *f, t_files *d, t_ls *l)
+void	get_blocks(t_lsprint *f, t_files *d)
 {
 	int j;
 
@@ -67,8 +67,6 @@ void	ft_user_details(t_lsprint *f, t_files *directories, t_ls *l)
 {
 	struct passwd *usr;
 	struct group *grp;
-	int j;
-	int i;
 
 	usr = getpwuid(directories->filelstats.st_uid);
  	grp = getgrgid(directories->filelstats.st_gid);
@@ -88,7 +86,6 @@ void	ft_user_details(t_lsprint *f, t_files *directories, t_ls *l)
 
 t_lsprint get_len_line(t_files **directories, t_ls *l)
 {
-	int i;
 	int j;
 	t_files *tmp;
 	t_lsprint	f;
@@ -98,7 +95,7 @@ t_lsprint get_len_line(t_files **directories, t_ls *l)
 	while (tmp)
 	{
 		(f.inode < (j = ft_intlen(tmp->filelstats.st_ino))) ? f.inode = j : 0;
-		get_blocks(&f, tmp, l);
+		get_blocks(&f, tmp);
 		(f.links < (j = ft_intlen(tmp->filelstats.st_nlink))) ? f.links = j : 0;
 		get_user(&f, tmp, l);
 		tmp = tmp->next;
