@@ -6,7 +6,7 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/09 02:13:22 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/09 03:52:40 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/09 04:59:49 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -55,7 +55,7 @@ void	ft_acess(t_files *directories)
 	ret = listxattr(directories->fullname, list, 1000, 0);
 	if (ret > 0)
 		ft_printf("@ ");
-	if (ret == 0)
+	else if (ret == 0)
 	{
 		acl = acl_get_link_np(directories->fullname, ACL_TYPE_EXTENDED);
 		if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
@@ -69,6 +69,8 @@ void	ft_acess(t_files *directories)
 			ft_printf("  ");
 		free(acl);
 	}
+	else
+		ft_printf("  ");
 }
 
 void	ft_rights(int mode, t_files *directories)
