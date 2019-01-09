@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   error.c                                          .::    .:/ .      .::   */
+/*   dir.c                                            .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2018/12/20 05:47:47 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/20 07:21:15 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/01/09 01:47:27 by shthevak     #+#   ##    ##    #+#       */
+/*   Updated: 2019/01/09 03:39:51 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "ls.h"
+#include "../includes/ls.h"
 
-int		ft_illegal_opt(t_ls *l)
+void	ft_dirprint(t_files **dir, t_ls *l)
 {
-	printf("ls: illegal option -- %c\n", l->c_error);
-	printf("usage: ls [-...] [file ...]\n");
-	free_struct(l);
-	return (0);
-}
+	t_files *tmp;
+	int		i;
 
-int		ft_error_occured(t_ls *l)
-{
-	printf("an error occured");
-	free_struct(l);
-	return (0);
-}
-
-void	print_files(t_ls *l)
-{
-	printf("printind l->files : \n");
-	while (l->files)
+	tmp = *dir;
+	i = 0;
+	while (tmp)
 	{
-		printf("       %s\n", l->files->filename);
-		l->files = (l->files)->next;
+		if (l->dir == 2)
+			ft_printf("\n%s:\n", tmp->filename);
+		else if (tmp->next && l->dir != 0)
+			ft_printf("%s:\n", tmp->filename);
+		if (!getfileinfo(l, tmp->filename))
+		{
+			ft_printf("%s:\n", tmp->filename);
+			ft_printf("ls: %s: Permission denied\n", tmp->filename);
+		}
+		tmp = tmp->next;
+		i++;
 	}
 }

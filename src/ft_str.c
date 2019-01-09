@@ -6,12 +6,12 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 09:08:10 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/08 05:16:46 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/09 03:48:47 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "ls.h"
+#include "../includes/ls.h"
 
 int		ft_strcmp(const char *s1, const char *s2)
 {
@@ -40,37 +40,10 @@ char	*ft_strdup(const char *s)
 	return (r);
 }
 
-char	*ft_strcat(char *dest, char *str)
-{
-	size_t i;
-	size_t j;
-
-	i = 0;
-	while (dest[i] != '\0')
-		i++;
-	j = 0;
-	while (str[j] != '\0')
-	{
-		dest[i] = str[j];
-		i++;
-		j++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-void	ft_strdel(char **as)
-{
-	if (as == NULL || *as == NULL)
-		return ;
-	free(*as);
-	*as = NULL;
-}
-
 char	*joinracine(char *s2)
 {
-	int i;
-	char *ret;
+	int		i;
+	char	*ret;
 
 	i = 0;
 	if (!(ret = malloc(sizeof(char) * (ft_strlen(s2) + 2))))
@@ -81,15 +54,15 @@ char	*joinracine(char *s2)
 		ret[i + 1] = s2[i];
 		i++;
 	}
-	ret[i+1] = '\0';
+	ret[i + 1] = '\0';
 	return (ret);
 }
 
 char	*ft_strjoinfname(char *s1, char *s2)
 {
 	char	*ret;
-	int i;
-	int j;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -101,9 +74,9 @@ char	*ft_strjoinfname(char *s1, char *s2)
 		return (NULL);
 	while (s1[i])
 		ret[j++] = s1[i++];
-	ret[j++]='/';
+	ret[j++] = '/';
 	i = 0;
-	while(s2[i])
+	while (s2[i])
 		ret[j++] = s2[i++];
 	ret[j] = '\0';
 	return (ret);
@@ -120,5 +93,3 @@ int		ft_strlen(const char *str)
 		s++;
 	return (s);
 }
-
-

@@ -6,12 +6,20 @@
 /*   By: shthevak <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/20 05:40:34 by shthevak     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/08 03:55:28 by shthevak    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/09 03:41:36 by shthevak    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "ls.h"
+#include "../includes/ls.h"
+
+void	ft_strdel(char **str)
+{
+	if (str == NULL || *str == NULL)
+		return ;
+	free(*str);
+	*str = NULL;
+}
 
 void	free_files(t_files **directories)
 {
@@ -44,7 +52,6 @@ void	free_struct(t_ls *l)
 			free_list(&l->errors);
 		if (l->errors)
 			free(l->errors);
-
 		free(l);
 	}
 }
@@ -58,7 +65,6 @@ void	free_list(t_list **list)
 	while (tmp)
 	{
 		free(tmp->filename);
-
 		tmp2 = tmp->next;
 		free(tmp);
 		tmp = tmp2;
