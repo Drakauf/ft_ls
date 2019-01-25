@@ -59,7 +59,7 @@ $(OBJ_PATH):
 make_printf:
 	@make -C ft_printf/
 
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INC)
 	@gcc $(FLAGS) -I $(INC) -o $@ -c $<
 
 clean:
